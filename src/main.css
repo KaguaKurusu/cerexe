@@ -1,0 +1,17 @@
+@import url(http://fonts.googleapis.com/css?family=Varela+Round);
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	overflow: hidden;
+	-webkit-app-region: drag;
+	font-family: "Varela Round";
+	font-size: 25px;
+	line-height: 22px;
+	text-align: center;
+	color: #fff;
+	text-shadow: 1px 1px 3px #000;
+}

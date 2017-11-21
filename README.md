@@ -32,7 +32,6 @@ Options:
 git clone https://github.com/KaguaKurusu/cerexe
 cd cerexe
 npm i
-npm run copy
 npm run build
 ```
 

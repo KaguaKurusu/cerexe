@@ -4,11 +4,10 @@
 	"description": "A desktop widget at digital clock, built on Electron.",
 	"main": "main.js",
 	"scripts": {
-		"start": "electron tmp/",
+		"start": "npm run copy && electron tmp/",
 		"copy": "node copy.js",
 		"clean": "node clean.js",
-		"build": "node build.js",
-		"run": "electron tmp/"
+		"build": "npm run copy && node build.js"
 	},
 	"repository": "https://github.com/KaguaKurusu/cerexe",
 	"keywords": [

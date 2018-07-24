@@ -17,15 +17,15 @@
 	"author": "Kagua Kurusu",
 	"license": "MIT",
 	"devDependencies": {
-		"devtron": "1.4.0",
-		"electron": "1.7.9",
-		"electron-packager": "9.1.0",
-		"fs-extra": "4.0.2"
+		"devtron": "^1.4.0",
+		"electron": "^2.0.5",
+		"electron-packager": "^12.1.0",
+		"fs-extra": "^7.0.0"
 	},
 	"dependencies": {
-		"electron-about-window": "1.8.0",
-		"electron-config": "1.0.0",
-		"image-size": "0.6.1",
-		"sprintf-js": "1.1.1"
+		"electron-about-window": "^1.12.1",
+		"electron-settings": "^3.2.0",
+		"image-size": "^0.6.3",
+		"sprintf-js": "^1.1.1"
 	}
 }

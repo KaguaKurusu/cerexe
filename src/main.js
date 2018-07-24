@@ -13,17 +13,15 @@ const imgSizeOf = require('image-size')
 const fs = require('fs')
 const pkg = require(path.join(__dirname, 'package.json'))
 const openAboutWindow = require('electron-about-window').default
-const Config = require('electron-config')
-const config = new Config({
-	defaults: {
-		bounds: {
-			width: 224,
-			height: 52
-		},
-		alwaysOnTop: false,
-		clickThrough: false,
-		lastImgDir: app.getPath('pictures')
-	}
+const Settings = require('./electron-settings-wrap')
+const config = new Settings({
+	bounds: {
+		width: 224,
+		height: 52
+	},
+	alwaysOnTop: false,
+	clickThrough: false,
+	lastImgDir: app.getPath('pictures')
 })
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -153,7 +151,6 @@ function createTrayIcon() {
 			type: 'checkbox',
 			checked: clickThrough,
 			click: (item) => { setClickThroughState(item.checked) }
-
 		},
 		{
 			label: '常に前面に表示',

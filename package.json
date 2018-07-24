@@ -1,6 +1,6 @@
 {
 	"name": "Cerexe",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "A desktop widget at digital clock, built on Electron.",
 	"main": "main.js",
 	"scripts": {

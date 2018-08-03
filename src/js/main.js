@@ -24,12 +24,60 @@ const config = new Settings({
 	lastImgDir: app.getPath('pictures')
 })
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null
 let aboutWindow = null
 let contents = null
 let trayIcon = null
+let menu = null
+
+function setMenu() {
+	let onTop  = config.get('alwaysOnTop')
+	let clickThrough = config.get('clickThrough')
+	let menuTemplate = [
+		{
+			label: 'クリックスルー',
+			type: 'checkbox',
+			checked: clickThrough,
+			click: (item) => { setClickThroughState(item.checked) }
+		},
+		{
+			label: '常に前面に表示',
+			type: 'checkbox',
+			checked: onTop,
+			click: (item) => { setAlwaysOnTopState(item.checked) }
+		},
+		{ label: '画像選択', click: () => { selectImage() } },
+		{ type: 'separator' },
+		{ label: '表示', click: () => { mainWindow.focus() } },
+		{ type: 'separator' },
+		{
+			label: app.getName() + 'について',
+			click: () => {
+				openAboutWindow({
+					icon_path: path.join(__dirname, 'app_icon.png'),
+					description: pkg.description,
+					copyright: 'Cpyright (c) 2017, 来栖華紅鴉',
+					license: pkg.license,
+					homepage: 'https://github.com/KaguaKurusu/cerexe',
+					win_options: {
+						parent: mainWindow,
+						modal: true,
+						skipTaskbar: true,
+						useContentSize: true,
+						titleBarStyle: 'hidden-inset',
+						minimizable: false,
+						maximizable: false,
+						resizable: false
+					}
+				})
+			}
+		},
+		{type: 'separator'},
+		{ label: '終了', click: () => { mainWindow.close() } }
+	]
+
+	menu = Menu.buildFromTemplate(menuTemplate)
+}
 
 function createWindow () {
 	let bounds = config.get('bounds')
@@ -87,7 +135,7 @@ function createWindow () {
 	// Open the DevTools.
 	// mainWindow.webContents.openDevTools()
 
-	mainWindow.on('close', () => {
+	mainWindow.on('move', () => {
 		config.set('bounds', mainWindow.getBounds())
 	})
 	// Emitted when the window is closed.
@@ -117,6 +165,7 @@ if (isSecondInstance) {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
 	createWindow()
+	setMenu()
 	createTrayIcon()
 })
 
@@ -137,52 +186,11 @@ app.on('activate', () => {
 	}
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
 function createTrayIcon() {
-	let onTop  = config.get('alwaysOnTop')
-	let clickThrough = config.get('clickThrough')
 	trayIcon = new Tray(path.join(__dirname, 'tray_icon.png'));
 
 	// add contextmenu to tasktray icon.
-	let trayMenu = Menu.buildFromTemplate([
-		{
-			label: 'クリックスルー',
-			type: 'checkbox',
-			checked: clickThrough,
-			click: (item) => { setClickThroughState(item.checked) }
-		},
-		{
-			label: '常に前面に表示',
-			type: 'checkbox',
-			checked: onTop,
-			click: (item) => { setAlwaysOnTopState(item.checked) }
-		},
-		{ label: '画像選択', click: () => { selectImage() } },
-		{ type: 'separator' },
-		{ label: '表示', click: () => { mainWindow.focus() } },
-		{ type: 'separator' },
-		{ label: app.getName() + 'について',  click: () => { openAboutWindow({
-			icon_path: path.join(__dirname, 'app_icon.png'),
-			description: pkg.description,
-			copyright: 'Cpyright (c) 2017, 来栖華紅鴉',
-			license: pkg.license,
-			homepage: 'https://github.com/KaguaKurusu/cerexe',
-			win_options: {
-				parent: mainWindow,
-				modal: true,
-				skipTaskbar: true,
-				useContentSize: true,
-				titleBarStyle: 'hidden-inset',
-				minimizable: false,
-				maximizable: false,
-				resizable: false
-			}
-		}) } },
-		{type: 'separator'},
-		{ label: '終了', click: () => { mainWindow.close() } }
-	])
-	trayIcon.setContextMenu(trayMenu)
+	trayIcon.setContextMenu(menu)
 	trayIcon.setToolTip(app.getName())
 	trayIcon.on('clicked', () => {
 		mainWindow.focus()
